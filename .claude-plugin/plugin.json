@@ -1,0 +1,31 @@
+{
+  "name": "adobe-app-builder",
+  "description": "Skills for Adobe App Builder development including database storage, Commerce extensibility MCP tools, config schema management, SDK version gating, runtime actions, and configuration",
+  "version": "1.7.0",
+  "hooks": "./hooks/hooks.json",
+  "commands": "./commands/",
+  "author": {
+    "name": "Aligent"
+  },
+  "license": "MIT",
+  "keywords": [
+    "adobe",
+    "app-builder",
+    "database",
+    "storage",
+    "runtime-actions",
+    "commerce",
+    "mcp",
+    "extensibility",
+    "config-schema",
+    "encryption",
+    "ga-versions",
+    "sdk-compatibility",
+    "api-mesh",
+    "graphql",
+    "integration-starter-kit",
+    "checkout-starter-kit",
+    "eventing",
+    "webhooks"
+  ]
+}

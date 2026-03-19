@@ -1,0 +1,150 @@
+{
+  "lastFullUpdate": "2026-03-18",
+  "skills": {
+    "adobe-database-storage": {
+      "description": "App Builder database storage — collections, CRUD, aggregation, CLI",
+      "lastChecked": "2026-03-18",
+      "sources": [
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/database",
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/",
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/db-commands",
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/db-runtime-actions",
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/db-mongo-compatibility",
+        "https://developer.adobe.com/app-builder/docs/guides/app_builder_guides/storage/db-best-practices"
+      ],
+      "githubRepos": []
+    },
+    "adobe-commerce-coding-tools": {
+      "description": "Commerce extensibility MCP servers, slash commands, deployment",
+      "lastChecked": "2026-03-18",
+      "sources": [
+        "https://experienceleague.adobe.com/en/docs/commerce/cloud-service/migration/migration-tools/coding-tools"
+      ],
+      "githubRepos": []
+    },
+    "adobe-commerce-config-schema": {
+      "description": "Config schema fields, types, encryption, scope trees",
+      "lastChecked": "2026-03-18",
+      "sources": [
+        "https://github.com/adobe/aio-commerce-sdk/blob/main/packages/aio-commerce-lib-config/docs/usage.md",
+        "https://github.com/adobe/aio-commerce-sdk/blob/main/packages/aio-commerce-lib-config/docs/api-reference/README.md",
+        "https://github.com/adobe/aio-commerce-sdk/blob/main/packages/aio-commerce-lib-config/docs/password-encryption.md"
+      ],
+      "githubRepos": [
+        {
+          "repo": "adobe/aio-commerce-sdk",
+          "path": "packages/aio-commerce-lib-config/src",
+          "branch": "main",
+          "note": "Source code for schema types, validation rules, and field definitions"
+        }
+      ]
+    },
+    "adobe-commerce-sdk-versions": {
+      "description": "GA version gate — compatible versions and release tracking",
+      "lastChecked": "2026-03-18",
+      "sources": [],
+      "githubRepos": [
+        {
+          "repo": "adobe/aio-commerce-sdk",
+          "path": "releases",
+          "branch": "main",
+          "note": "Check for new GA releases and update baseline version table"
+        }
+      ]
+    },
+    "adobe-api-mesh": {
+      "description": "API Mesh — handlers, transforms, hooks, secrets, caching, CLI commands",
+      "lastChecked": "2026-03-18",
+      "sources": [
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/create-mesh/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/work-with-mesh/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/handlers/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/handlers/graphql/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/handlers/openapi/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/handlers/json-schema/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/prefix/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/rename/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/filter-schema/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/naming-convention/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/encapsulate/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/basic/transforms/type-merging/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/hooks/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/caching/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/caching/cache-control-headers/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/secrets/",
+        "https://developer.adobe.com/graphql-mesh-gateway/mesh/advanced/developer-tools/",
+        "https://experienceleague.adobe.com/en/docs/commerce-learn/tutorials/extensibility/api-mesh/getting-started-api-mesh",
+        "https://experienceleague.adobe.com/en/docs/commerce-learn/tutorials/extensibility/api-mesh/installing-aio-mesh-plugin",
+        "https://experienceleague.adobe.com/en/playlists/commerce-get-started-app-builder-and-api-mesh"
+      ],
+      "githubRepos": [
+        {
+          "repo": "AdobeDocs/graphql-mesh-gateway",
+          "path": "src/pages/mesh",
+          "branch": "main",
+          "note": "Source markdown for all API Mesh documentation pages"
+        }
+      ]
+    },
+    "commerce-integration-starter-kit": {
+      "description": "Integration starter kit — event-driven sync for products, customers, orders, stock",
+      "lastChecked": "2026-03-18",
+      "sources": [],
+      "githubRepos": [
+        {
+          "repo": "adobe/commerce-integration-starter-kit",
+          "path": "",
+          "branch": "main",
+          "note": "Full starter kit: README, app.config.yaml, env.dist, action patterns, onboarding scripts, consumer routing"
+        },
+        {
+          "repo": "adobe/commerce-integration-starter-kit",
+          "path": "actions",
+          "branch": "main",
+          "note": "All runtime actions: product, customer, order, stock — commerce and external directions"
+        },
+        {
+          "repo": "adobe/commerce-integration-starter-kit",
+          "path": "scripts",
+          "branch": "main",
+          "note": "Onboarding, event subscription, provider/metadata/registration scripts"
+        }
+      ]
+    },
+    "commerce-checkout-starter-kit": {
+      "description": "Checkout starter kit — payment methods, shipping carriers, tax integrations, webhooks",
+      "lastChecked": "2026-03-18",
+      "sources": [
+        "https://developer.adobe.com/commerce/extensibility/starter-kit/checkout/"
+      ],
+      "githubRepos": [
+        {
+          "repo": "adobe/commerce-checkout-starter-kit",
+          "path": "",
+          "branch": "main",
+          "note": "Full starter kit: README, app.config.yaml, env.dist, YAML configs, webhook actions"
+        },
+        {
+          "repo": "adobe/commerce-checkout-starter-kit",
+          "path": "actions",
+          "branch": "main",
+          "note": "Runtime actions: validate-payment, filter-payment, shipping-methods, collect-taxes, events"
+        },
+        {
+          "repo": "adobe/commerce-checkout-starter-kit",
+          "path": "lib",
+          "branch": "main",
+          "note": "Shared libraries: Commerce REST client, auth, webhook verification, HTTP helpers"
+        },
+        {
+          "repo": "adobe/commerce-checkout-starter-kit",
+          "path": "scripts",
+          "branch": "main",
+          "note": "Setup scripts: create payment/shipping/tax, configure events, sync OAuth creds"
+        }
+      ]
+    }
+  }
+}
