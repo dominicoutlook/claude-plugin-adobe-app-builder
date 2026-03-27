@@ -27,8 +27,10 @@ adobe-app-builder/
 │   │   └── SKILL.md                  # API Mesh handlers, transforms, hooks, CLI
 │   ├── commerce-integration-starter-kit/
 │   │   └── SKILL.md                  # Back-office integration, event-driven sync
-│   └── commerce-checkout-starter-kit/
-│       └── SKILL.md                  # Payment, shipping, tax, webhooks
+│   ├── commerce-checkout-starter-kit/
+│   │   └── SKILL.md                  # Payment, shipping, tax, webhooks
+│   └── adobe-commerce-webhooks-lib/
+│       └── SKILL.md                  # aio-commerce-lib-webhooks API client and response helpers
 └── README.md
 ```
 
@@ -62,6 +64,10 @@ Reference for the [integration starter kit](https://github.com/adobe/commerce-in
 
 Reference for the [checkout starter kit](https://github.com/adobe/commerce-checkout-starter-kit) — out-of-process payment methods, shipping carriers, and tax integrations. Covers webhook actions (validate-payment, filter-payment, shipping-methods, collect-taxes), YAML configuration files (`payment-methods.yaml`, `shipping-carriers.yaml`, `tax-integrations.yaml`), webhook signature verification, Commerce event handling, 3rd-party event publishing, Admin UI SDK extension, and setup scripts.
 
+### adobe-commerce-webhooks-lib
+
+Reference for [`@adobe/aio-commerce-lib-webhooks`](https://github.com/adobe/aio-commerce-sdk/tree/main/packages/aio-commerce-lib-webhooks) — a standalone SDK library for Adobe Commerce webhook integration. Covers the webhooks API client (list/subscribe/unsubscribe), typed operation responses (`successOperation`, `exceptionOperation`, `addOperation`, `replaceOperation`, `removeOperation`), `ok()` HTTP response helper, TypeScript generics, and multiple operation arrays. **Note: Still under development, not yet production-ready.**
+
 ## Hooks
 
 ### Pre-deploy GA Version Check
@@ -80,13 +86,13 @@ A `PreToolUse` hook automatically runs when you type `aio app deploy` or `aio-ap
 ```
 ⚠ Non-GA @adobe/aio-commerce-* packages detected:
 
-  @adobe/aio-commerce-lib-webhooks@^0.1.0-beta — version 0.x is pre-GA
+  @adobe/aio-commerce-lib-app@^1.2.0-beta — pre-release
 
 These are pre-release packages. Consider updating to GA versions.
 
 ℹ GA updates available for @adobe/aio-commerce-* packages:
 
-  @adobe/aio-commerce-lib-config: 1.0.1 → 1.0.2
+  @adobe/aio-commerce-lib-config: 1.0.2 → 1.0.3
 
 Run the appropriate install command to update (e.g., pnpm add <package>@<version>).
 

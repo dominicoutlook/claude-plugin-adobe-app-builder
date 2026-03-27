@@ -226,7 +226,7 @@ Comment out unneeded packages in `app.config.yaml` before deploying.
 
 ## Onboarding Config
 
-**`scripts/onboarding/config/starter-kit-registrations.json`** — controls which entities/directions are registered:
+**`scripts/onboarding/custom/starter-kit-registrations.json`** — controls which entities/directions are registered:
 
 ```json
 {

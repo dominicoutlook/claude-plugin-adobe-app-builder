@@ -385,6 +385,25 @@ await setCustomScopeTree({
 - Duplicate `code:level` combinations are **forbidden** across the entire tree
 - Custom scopes always get `is_removable: true`
 
+## Getting the Scope Tree
+
+```typescript
+import { getScopeTree } from "@adobe/aio-commerce-lib-config";
+
+// Returns cached scope tree (or fetches from Commerce API if not cached)
+const tree = await getScopeTree();
+// Returns: ScopeTree (array of root ScopeNode[])
+```
+
+## Removing Commerce Scopes
+
+```typescript
+import { unsyncCommerceScopes } from "@adobe/aio-commerce-lib-config";
+
+// Removes all persisted Commerce scope data
+await unsyncCommerceScopes();
+```
+
 ## Scope Selectors
 
 Three ways to select a scope for get/set operations:

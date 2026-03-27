@@ -9,7 +9,17 @@ description: Use when working with Adobe Commerce App Builder extensions, conver
 
 Adobe provides an AI coding tooling suite that integrates with Claude Code (and other agents) via MCP servers and agent skills. It enables context-aware code generation, debugging, deployment, and documentation for Adobe Commerce App Builder extensions.
 
+Supported agents: Cursor, Claude Code, GitHub Copilot, Windsurf, Gemini CLI, OpenAI Codex, Cline, and 40+ others.
+
 Reference: https://experienceleague.adobe.com/en/docs/commerce/cloud-service/migration/migration-tools/coding-tools
+
+## Setup
+
+```bash
+aio commerce extensibility tools-setup
+```
+
+Interactive wizard that configures: starter kit selection, coding agent, and package manager. After running, restart your coding agent to pick up the new MCP servers and skills.
 
 ## MCP Servers
 

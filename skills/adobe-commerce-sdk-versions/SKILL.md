@@ -20,31 +20,27 @@ Before installing or recommending any `@adobe/aio-commerce-*` package:
    - A stable patch release AFTER the GA baseline (e.g., `1.0.1`, `1.0.2` after a `1.0.0` GA)
 4. **REJECT any version that contains**: `beta`, `alpha`, `rc`, `canary`, or date-stamped pre-release suffixes (e.g., `0.1.0-beta-20260317091123`)
 
-## GA Baseline (as of 2026-03-10)
+## GA Baseline (as of 2026-03-27)
 
-The GA release is `@adobe/aio-commerce-sdk@1.0.0`. The following packages were declared GA:
+The latest GA release is `@adobe/aio-commerce-sdk@1.1.0` (March 24, 2025). The following packages are declared GA:
 
 | Package | GA Version | Status |
 |---------|-----------|--------|
-| `@adobe/aio-commerce-sdk` | `1.0.0` | GA |
-| `@adobe/aio-commerce-lib-events` | `1.0.0` | GA |
-| `@adobe/aio-commerce-lib-auth` | `1.0.0` | GA |
+| `@adobe/aio-commerce-sdk` | `1.1.0` | GA |
+| `@adobe/aio-commerce-lib-webhooks` | `0.1.0` | GA (added in 1.1.0) |
+| `@adobe/aio-commerce-lib-events` | `1.0.1` | GA |
+| `@adobe/aio-commerce-lib-auth` | `1.0.1` | GA |
+| `@adobe/aio-commerce-lib-app` | `1.1.0` | GA |
+| `@adobe/aio-commerce-lib-api` | `1.0.1` | GA |
+| `@adobe/aio-commerce-lib-config` | `1.0.3` | GA |
 | `@adobe/aio-commerce-lib-core` | `1.0.0` | GA |
-| `@adobe/aio-commerce-lib-api` | `1.0.0` | GA |
-
-### GA-Compatible Patch Releases (post-GA, stable)
-
-| Package | Version | Status |
-|---------|---------|--------|
-| `@adobe/aio-commerce-lib-config` | `1.0.2` | GA-compatible (patch) |
-| `@adobe/aio-commerce-lib-app` | `1.0.2` | GA-compatible (patch) |
 
 ### NOT GA — Do Not Use in Production
 
 | Package | Version | Why |
 |---------|---------|-----|
-| `@adobe/aio-commerce-lib-webhooks` | `0.1.0-beta-*` | Beta, pre-release |
-| `@adobe/aio-commerce-lib-app` | `1.1.0-beta-*` | Beta, includes webhooks dependency |
+| `@adobe/aio-commerce-lib-config` | `1.0.4-beta-*` | Beta, pre-release |
+| `@adobe/aio-commerce-lib-app` | `1.2.0-beta-*` | Beta, pre-release |
 
 ## How to Check in an Existing Project
 
@@ -66,16 +62,17 @@ Or check `package.json` directly for any `@adobe/aio-commerce-*` entries under `
 
 ```bash
 # Install specific GA-compatible versions
-pnpm add @adobe/aio-commerce-sdk@1.0.0
-pnpm add @adobe/aio-commerce-lib-config@1.0.2
-pnpm add @adobe/aio-commerce-lib-app@1.0.2
-pnpm add @adobe/aio-commerce-lib-events@1.0.0
-pnpm add @adobe/aio-commerce-lib-auth@1.0.0
+pnpm add @adobe/aio-commerce-sdk@1.1.0
+pnpm add @adobe/aio-commerce-lib-config@1.0.3
+pnpm add @adobe/aio-commerce-lib-app@1.1.0
+pnpm add @adobe/aio-commerce-lib-events@1.0.1
+pnpm add @adobe/aio-commerce-lib-auth@1.0.1
+pnpm add @adobe/aio-commerce-lib-webhooks@0.1.0
 ```
 
 ## When This Skill's Data May Be Stale
 
-This skill contains a snapshot of GA versions as of 2026-03-10. The GA baseline may have been updated since then. **Always fetch the releases page** to confirm:
+This skill contains a snapshot of GA versions as of 2026-03-27. The GA baseline may have been updated since then. **Always fetch the releases page** to confirm:
 
 ```
 https://github.com/adobe/aio-commerce-sdk/releases
@@ -106,4 +103,4 @@ Need to install @adobe/aio-commerce-* package?
 
 When a non-GA package is detected or requested:
 
-> **Warning:** `@adobe/aio-commerce-lib-webhooks@0.1.0-beta` is a pre-release package and is NOT part of the GA release. Using beta packages in production is not recommended. The current GA baseline is `@adobe/aio-commerce-sdk@1.0.0` (released 2026-03-10). Would you like to proceed with the beta version, or use only GA-compatible packages?
+> **Warning:** `<package>@<version>` is a pre-release package and is NOT part of the GA release. Using beta packages in production is not recommended. The current GA baseline is `@adobe/aio-commerce-sdk@1.1.0` (released 2025-03-24). Would you like to proceed with the beta version, or use only GA-compatible packages?

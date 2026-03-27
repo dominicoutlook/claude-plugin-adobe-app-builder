@@ -234,6 +234,11 @@ const result = await collection.bulkWrite([
 ]);
 ```
 
+## CLI Requirements
+
+- `@adobe/aio-cli-plugin-app` v14.7.0+
+- `@adobe/aio-cli-plugin-app-storage` v1.5.0+
+
 ## CLI Quick Reference
 
 ```bash
@@ -259,6 +264,7 @@ aio app db index drop <COLLECTION> <INDEX_NAME>
 aio app db document insert <COLLECTION> '<JSON>'
 aio app db document find <COLLECTION> '<FILTER>'
 aio app db document update <COLLECTION> '<FILTER>' '<UPDATE>'
+aio app db document replace <COLLECTION> '<FILTER>' '<REPLACEMENT>'
 aio app db document delete <COLLECTION> '<FILTER>'
 aio app db document count <COLLECTION> '<FILTER>'
 

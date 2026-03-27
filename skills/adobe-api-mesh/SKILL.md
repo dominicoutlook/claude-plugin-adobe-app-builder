@@ -472,6 +472,10 @@ module.exports = { default: handleOnFetch, __esModule: true };
 
 Secrets are encrypted using AES-256. Values cannot be retrieved after creation.
 
+**Limits:** Maximum 50 secrets per mesh, up to 5 KB per secret.
+
+**Supported types:** strings, numbers, booleans, objects, and arrays.
+
 ### secrets.yaml
 
 ```yaml
@@ -735,6 +739,7 @@ aio api-mesh:run mesh.json --env .env_local
 | filterSchema | 0.15.23 | Fully supported |
 | namingConvention | 0.13.22 | Fully supported |
 | typeMerging | 0.5.20 | Fully supported |
+| replaceField | — | Deprecated |
 | encapsulate | 0.4.21 | Accepted, not fully tested |
 | federation | 0.11.14 | Accepted, not fully tested |
 
