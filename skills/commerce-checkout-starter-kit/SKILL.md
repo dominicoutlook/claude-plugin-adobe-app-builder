@@ -29,8 +29,8 @@ composer require magento/module-out-of-process-tax-management --with-dependencie
 
 Optional:
 - Commerce Webhooks: version per [installation docs](https://developer.adobe.com/commerce/extensibility/webhooks/installation/)
-- Commerce Eventing: version `1.12.1`+
-- Admin UI SDK: `magento/commerce-backend-sdk >= 3.0`
+- Commerce Eventing: version `1.12.1`+ (`composer update magento/commerce-eventing --with-dependencies`)
+- Admin UI SDK: `composer require "magento/commerce-backend-sdk": ">=3.0"`
 
 ## Setup Steps
 
@@ -225,6 +225,31 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
 The `webhookVerify()` function in `lib/adobe-commerce.js` checks the `x-adobe-commerce-webhook-signature` header against the request body.
+
+### PaaS: Register webhooks via webhooks.xml
+
+For PaaS deployments, register webhooks via `webhooks.xml` (replace URL after deploying):
+
+```xml
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_AdobeCommerceWebhooks:etc/webhooks.xsd">
+    <method name="plugin.magento.out_of_process_tax_management.api.oop_tax_collection.collect_taxes" type="before">
+        <hooks>
+            <batch name="collect_taxes">
+                <hook
+                    name="collect_taxes"
+                    url="https://<your_app_builder>.runtime.adobe.io/api/v1/web/<your-project>/collect-taxes"
+                    method="POST" timeout="10000" softTimeout="2000"
+                    priority="300" required="true" fallbackErrorMessage="Tax calculation failed. Please try again later."
+                    ttl="0"
+                />
+            </batch>
+        </hooks>
+    </method>
+</config>
+```
+
+For SaaS: register via **System > Webhooks > Webhooks Subscriptions** in Commerce Admin.
 
 ### Webhook Response Format
 

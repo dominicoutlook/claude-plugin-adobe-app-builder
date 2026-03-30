@@ -1,6 +1,25 @@
 {
   "lastFullUpdate": "2026-03-27",
   "skills": {
+    "aikido": {
+      "description": "Aikido Security Scanner — NoSQL injection, exposed secrets, CVE/transitive dependency fixes, PR comment templates",
+      "lastChecked": "2026-03-30",
+      "sources": [
+        "https://help.aikido.dev/",
+        "https://help.aikido.dev/code-scanning",
+        "https://help.aikido.dev/pr-and-release-gating",
+        "https://help.aikido.dev/autofix-and-remediation"
+      ],
+      "githubRepos": [
+        {
+          "repo": "opengrep/opengrep",
+          "path": "",
+          "branch": "main",
+          "note": "Aikido's open-source SAST engine (OpenGrep fork of Semgrep); check for new rule types"
+        }
+      ],
+      "notes": "Skill lives at ~/.claude/skills/aikido/skill.md (user-level, not in plugin). Content is hand-crafted from project experience. Source URLs return TOC-only pages; no fetchable detailed documentation found as of 2026-03-30."
+    },
     "app-builder-cron": {
       "description": "Cron jobs in App Builder — OpenWhisk alarms package, interval/once/cron triggers, manifest config, deployment",
       "lastChecked": "2026-03-27",

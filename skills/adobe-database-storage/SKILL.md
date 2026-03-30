@@ -49,6 +49,8 @@ Run provisioning:
 aio app db provision --region <region>
 ```
 
+**Note:** Declarative provisioning only runs during `aio app deploy` — NOT during `aio app run` or `aio app dev`. Provision manually with `aio app db provision` for local development.
+
 After provisioning, set `auto-provision: false` to avoid re-provisioning on every deploy:
 
 ```yaml
@@ -154,29 +156,59 @@ async function main(params) {
 
     const collection = await client.collection('my_collection');
 
-    // --- INSERT ---
+    // --- INSERT ONE ---
     const insertResult = await collection.insertOne({
       name: 'Jane Smith',
       email: 'jane@example.com',
       createdAt: new Date()
     });
 
+    // --- INSERT MANY ---
+    await collection.insertMany([
+      { name: 'Alice', email: 'alice@example.com' },
+      { name: 'Bob', email: 'bob@example.com' }
+    ]);
+
     // --- FIND ---
     const doc = await collection.findOne({ email: 'jane@example.com' });
     const docs = await collection.find({ status: 'active' })
       .project({ name: 1, email: 1 })
       .sort({ name: 1 })
+      .skip(0)
       .limit(10)
       .toArray();
 
-    // --- UPDATE ---
+    // --- COUNT ---
+    const estimate = await collection.estimatedDocumentCount(); // fast, uses metadata
+    const exact = await collection.countDocuments({ status: 'active' }); // accurate, scans docs
+
+    // --- UPDATE ONE ---
     await collection.updateOne(
       { email: 'jane@example.com' },
       { $set: { lastLogin: new Date() } }
     );
 
-    // --- DELETE ---
+    // --- UPDATE MANY ---
+    await collection.updateMany({ age: { $lt: 18 } }, { $set: { category: 'minor' } });
+
+    // --- REPLACE ONE ---
+    await collection.replaceOne({ email: 'jane@example.com' }, { name: 'Jane', email: 'jane@example.com' });
+
+    // --- FIND AND UPDATE ---
+    const updated = await collection.findOneAndUpdate(
+      { email: 'jane@example.com' },
+      { $set: { lastLogin: new Date() } },
+      { returnDocument: 'after' }
+    );
+
+    // --- DELETE ONE ---
     await collection.deleteOne({ email: 'jane@example.com' });
+
+    // --- DELETE MANY ---
+    await collection.deleteMany({ age: { $lt: 0 } });
+
+    // --- FIND AND DELETE ---
+    const deleted = await collection.findOneAndDelete({ email: 'jane@example.com' });
 
     return { statusCode: 200, body: { success: true } };
   } catch (error) {
@@ -224,6 +256,53 @@ const results = await collection.aggregate()
   .toArray();
 ```
 
+## Cursor Iteration Patterns
+
+For large datasets, iterate with cursors instead of `.toArray()` to avoid loading all data into memory:
+
+```javascript
+// for await...of (recommended)
+for await (const doc of cursor) {
+  console.log(doc);
+}
+
+// hasNext/next
+while (await cursor.hasNext()) {
+  const doc = await cursor.next();
+  console.log(doc);
+}
+
+// Stream
+const stream = cursor.stream();
+stream.on('data', (doc) => console.log(doc));
+
+// Transform on read (.map)
+const cursor = collection.find({ status: 'active' })
+  .map(doc => ({ ...doc, displayName: `${doc.firstName} ${doc.lastName}` }));
+```
+
+## Advanced Query Options
+
+```javascript
+const cursor = collection.find({ status: 'active' })
+  .hint({ status: 1 })                         // Force a specific index
+  .maxTimeMS(5000)                             // Query timeout (ms)
+  .collation({ locale: 'en', strength: 2 })    // Case-insensitive sort
+  .noCursorTimeout(true);                      // Disable cursor timeout
+```
+
+## Storage Statistics
+
+```javascript
+// Workspace database stats
+const dbStats = await client.dbStats();
+const dbStatsKb = await client.dbStats({ scale: 1024 });
+
+// Org-wide stats across all databases
+const orgStats = await client.orgStats();
+const orgStatsMb = await client.orgStats({ scale: 1024 * 1024 });
+```
+
 ## Bulk Operations
 
 ```javascript
@@ -238,6 +317,18 @@ const result = await collection.bulkWrite([
 
 - `@adobe/aio-cli-plugin-app` v14.7.0+
 - `@adobe/aio-cli-plugin-app-storage` v1.5.0+
+
+## Region Configuration
+
+Region priority order:
+1. `app.config.yaml` manifest setting
+2. `--region` CLI flag
+3. `AIO_DB_REGION` environment variable
+4. Default: `amer`
+
+Set `AIO_DB_REGION` in `.env` or pass `{ region: 'emea' }` to `libDb.init()` when the workspace database is not in `amer`.
+
+If provisioned in wrong region: delete with `aio app db delete`, update `app.config.yaml`, then re-provision.
 
 ## CLI Quick Reference
 
@@ -300,3 +391,12 @@ aio app db org stats
 - Views
 - Database selection (workspace-bound, one DB per workspace)
 - Direct database admin commands (use CLI or `aio-lib-db` only)
+
+## Data Recovery
+
+Accidental deletion or corruption may be recoverable via backup restoration — **not automatic**. Contact Adobe Support immediately with:
+- IMS Organization name and ID
+- Workspace/runtime namespace
+- Context about the deletion event
+
+Recovery is best-effort and only possible within a limited time window after the event.

@@ -27,14 +27,14 @@ git clone git@github.com:adobe/commerce-integration-starter-kit.git
 cd commerce-integration-starter-kit
 cp env.dist .env
 # Fill .env values
-npm install
+npm install  # also builds workspace packages in packages/** via postinstall
 
 # 2. Connect to workspace
 aio login
 aio console org select
 aio console project select
 aio console workspace select
-aio app use  # Choose merge
+aio app use  # Choose merge (m)
 
 # 3. Edit app.config.yaml — comment out unneeded entity packages
 
@@ -44,9 +44,15 @@ aio app deploy
 # 5. Run onboarding (creates providers, metadata, registrations, configures eventing)
 npm run onboard
 
-# 6. Subscribe to Commerce events
+# 6. Subscribe to Commerce events (module >= 1.6.0 required)
 npm run commerce-event-subscribe
 ```
+
+**COMMERCE_BASE_URL format:**
+- PaaS: `https://<environment>.magentosite.cloud/rest/` (must include `/rest/`)
+- SaaS: `https://na1-sandbox.api.commerce.adobe.com/<tenant-id>/`
+
+**SaaS note:** Add `commerce.accs` to `OAUTH_SCOPES` in `.env` when using Adobe Commerce as a Cloud Service API.
 
 ## Project Structure
 
@@ -118,6 +124,40 @@ Every event handler action follows the same 6-file pattern:
 | `post.js` | Post-processing hook (runs after sender) |
 
 **To customize an integration:** Edit `transformer.js` (data mapping), `sender.js` (API calls to your system), and optionally `pre.js`/`post.js`.
+
+## Required Event Subscriptions
+
+Minimum fields required per entity (defined in `commerce-event-subscribe.json`):
+
+| Entity | Event | Required Fields |
+|--------|-------|-----------------|
+| Product | `observer.catalog_product_delete_commit_after` | `sku` |
+| Product | `observer.catalog_product_save_commit_after` | `sku, created_at, updated_at` |
+| Customer | `observer.customer_save_commit_after` | `created_at, updated_at` |
+| Customer | `observer.customer_delete_commit_after` | `entity_id` |
+| Customer Group | `observer.customer_group_save_commit_after` | `customer_group_code` |
+| Customer Group | `observer.customer_group_delete_commit_after` | `customer_group_code` |
+| Order | `observer.sales_order_save_commit_after` | `created_at, updated_at` |
+| Stock | `observer.cataloginventory_stock_item_save_commit_after` | `product_id` |
+
+Full event schemas are in `EVENTS_SCHEMA.json` at the repo root.
+
+## Adding a New Event
+
+1. Add event to `./scripts/onboarding/config/events.json`
+2. Run `npm run onboard`
+3. Create handler: `actions/{entity}/{flow}/NEW_OPERATION/index.js`
+4. Register in `actions.config.yaml`
+5. Add `case` to the consumer's `switch` in `consumer/index.js`:
+   ```javascript
+   case 'com.adobe.commerce.observer.THE_NEW_EVENT': {
+     const res = await openwhiskClient.invokeAction('entity-flow/NEW_OPERATION', params.data.value)
+     response = res?.response?.result?.body
+     statusCode = res?.response?.result?.statusCode
+     break
+   }
+   ```
+6. Run `aio app deploy`
 
 ## Consumer Routing
 
@@ -246,6 +286,19 @@ Remove entries you don't need before running `npm run onboard`.
 | `npm run onboard` | Create providers, metadata, registrations, configure eventing |
 | `npm run commerce-event-subscribe` | Subscribe to Commerce observer events |
 | `npm test` | Run Jest tests |
+
+## Action URLs
+
+```bash
+# Get webhook/ingestion/info action URLs after deploying
+aio runtime action get ingestion/webhook --url
+aio runtime action get webhook/check-stock --url
+aio runtime action get starter-kit/info --url
+```
+
+## Log Management
+
+`stringParameters` in `./actions/utils.js` masks sensitive values in logs by replacing them with `<hidden>`. Default hidden terms: `["secret", "token"]`. Add custom terms to the `hidden` array as needed.
 
 ## OpenTelemetry
 

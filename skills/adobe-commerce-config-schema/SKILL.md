@@ -249,12 +249,12 @@ In your runtime action or app entry point:
 
 ```typescript
 import { initialize } from "@adobe/aio-commerce-lib-config";
-import schema from "./app.commerce.config";
+import schema from "./app.commerce.config.json" with { type: "json" };
 
 await initialize({ schema });
 ```
 
-This registers the schema with the config service. Call once at app startup.
+This registers the schema with the config service. Call once at app startup. **Schema is stored in memory only** — it is not persisted and must be provided on every startup. Configuration functions will throw `Error: Schema not initialized. Call initialize({ schema }) before using configuration functions.` if called before initialization.
 
 ## Password Encryption
 
@@ -295,21 +295,42 @@ Values are stored as: `enc:INITIALIZATION_VECTOR:AUTH_TAG:ENCRYPTED_DATA`
 
 ### Using encryption in operations
 
+**Encryption is strictly enforced** — setting or getting a password field without an `encryptionKey` will throw an error. There is no plain text fallback.
+
 ```typescript
 import { setConfiguration, getConfiguration, byScopeId } from "@adobe/aio-commerce-lib-config";
 
-// Set — password auto-encrypted
+// Set — password auto-encrypted (throws if encryptionKey missing)
 await setConfiguration(
   { config: [{ name: "api_secret", value: "my-secret" }] },
   byScopeId("scope-uuid"),
   { encryptionKey: process.env.AIO_COMMERCE_CONFIG_ENCRYPTION_KEY },
 );
 
-// Get — password auto-decrypted
+// Get — password auto-decrypted (throws if encryptionKey missing)
 const result = await getConfiguration(
   byScopeId("scope-uuid"),
   { encryptionKey: process.env.AIO_COMMERCE_CONFIG_ENCRYPTION_KEY },
 );
+```
+
+### Key rotation
+
+```typescript
+import { generateEncryptionKey, getConfiguration, setConfiguration } from "@adobe/aio-commerce-lib-config";
+
+// 1. Get all configs with old key
+const oldConfig = await getConfiguration(byScopeId("scope-uuid"), {
+  encryptionKey: "old-key",
+});
+
+// 2. Generate new key
+const newKey = generateEncryptionKey();
+
+// 3. Re-save with new key (re-encrypts all password fields)
+await setConfiguration({ config: oldConfig.config }, byScopeId("scope-uuid"), {
+  encryptionKey: newKey,
+});
 ```
 
 ## Scope Tree & Configuration Inheritance
@@ -337,12 +358,11 @@ All Commerce scopes live under a parent `"commerce"` node.
 
 ```typescript
 import { syncCommerceScopes } from "@adobe/aio-commerce-lib-config";
+import { resolveCommerceHttpClientParams } from "@adobe/aio-commerce-sdk/api";
 
-const result = await syncCommerceScopes({
-  baseUrl: "https://my-commerce.instance.com",
-  accessToken: "commerce-admin-token",
-});
-// result: { scopeTree: ScopeNode[], synced: boolean, error?: string }
+const commerceConfig = resolveCommerceHttpClientParams(params);
+const result = await syncCommerceScopes(commerceConfig);
+// result: { synced: boolean }
 ```
 
 Commerce REST endpoints used: `store/websites`, `store/storeGroups`, `store/storeViews`.
@@ -390,9 +410,26 @@ await setCustomScopeTree({
 ```typescript
 import { getScopeTree } from "@adobe/aio-commerce-lib-config";
 
-// Returns cached scope tree (or fetches from Commerce API if not cached)
-const tree = await getScopeTree();
-// Returns: ScopeTree (array of root ScopeNode[])
+// Returns cached scope tree
+const result = await getScopeTree();
+// result: { scopeTree: ScopeNode[], isCachedData: boolean }
+console.log(result.scopeTree);
+console.log("Using cached data:", result.isCachedData);
+
+// Force refresh from Commerce API
+const freshResult = await getScopeTree(
+  { refreshData: true, commerceConfig },
+  { cacheTimeout: 600000 },
+);
+```
+
+## Getting the Config Schema
+
+```typescript
+import { getConfigSchema } from "@adobe/aio-commerce-lib-config";
+
+const schema = await getConfigSchema();
+// Returns: array of field definitions
 ```
 
 ## Removing Commerce Scopes
@@ -401,7 +438,10 @@ const tree = await getScopeTree();
 import { unsyncCommerceScopes } from "@adobe/aio-commerce-lib-config";
 
 // Removes all persisted Commerce scope data
-await unsyncCommerceScopes();
+const { unsynced } = await unsyncCommerceScopes();
+if (unsynced) {
+  console.log("Commerce scopes removed successfully");
+}
 ```
 
 ## Scope Selectors
